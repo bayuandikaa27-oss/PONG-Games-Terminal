@@ -47,7 +47,7 @@ void arena() {
     }
 
     for (int i = 0; i < ukuran_papan; i++) {
-        mvaddch(pemain2 + i + 4, WIDTH - 1, '|');
+        mvaddch(pemain2 + i + 4, panjang - 1, '|');
     }
 
     mvaddch(bolaY + 4, bolaX + 2, 'O');
@@ -56,4 +56,63 @@ void arena() {
              "P1: W/S | P2: UP/DOWN | Q: QUIT");
 
     refresh();
+}
+
+void gerakin_papan() {
+    int input = getch();
+    switch (input) {
+        case 'w':
+        case 'W':
+            if (pemain1 > 4) {
+                pemain1--;
+            }
+            break;
+        case 's':
+        case 'S':
+            if (pemain1 < lebar + 3 - ukuran_papan) {
+                pemain1++;
+            }
+            break;
+        case KEY_UP:
+            if (pemain2 > 4) {
+                pemain2--;
+            }
+            break;
+        case KEY_DOWN:
+            if (pemain2 < lebar + 3 - ukuran_papan) {
+                pemain2++;
+            }
+            break;
+        case 'q':
+        case 'Q':
+            endwin();
+            exit(0);
+    }
+}
+
+void gerakin_bola() {
+    bolaX += bolaFX;
+    bolaY += bolaFY;
+
+    if (bolaY <= 4 || bolaY >= lebar + 3) {
+        bolaFY *= -1;
+    }
+
+    if (bolaX == 5) {
+        if (bolaY >= pemain1 + 4 && bolaY < pemain1 + 4 + ukuran_papan) {
+            bolaFX *= -1;
+        } else {
+            skor2++;
+            resetbola();
+        }
+    }
+
+    if (bolaX == panjang + 1) {
+        if (bolaY >= pemain2 + 4 && bolaY < pemain2 + 4 + ukuran_papan) {
+            bolaFX *= -1;
+        } else {
+            skor1++;
+            resetbola();
+        }
+    }
 }
