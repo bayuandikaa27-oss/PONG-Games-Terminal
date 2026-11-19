@@ -116,3 +116,33 @@ void gerakin_bola() {
         }
     }
 }
+int main() {
+    
+    initscr();
+    noecho();
+    curs_set(0);
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE); 
+
+    while (skor1 < skor_akhir && skor2 < skor_akhir) {
+        arena();
+        gerakin_papan();
+        gerakin_bola();
+        napms(60)
+    }
+
+    
+    nodelay(stdscr, FALSE);
+    erase();
+    if (skor1 >= skor_akhir) {
+        mvprintw(10, 25, "PLAYER 1 MENANG!");
+    } else {
+        mvprintw(10, 25, "PLAYER 2 MENANG!");
+    }
+    mvprintw(12, 20, "Tekan tombol apa saja untuk keluar...");
+    refresh();
+    getch();
+
+    endwin();
+    return 0;
+}
