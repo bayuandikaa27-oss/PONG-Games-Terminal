@@ -178,6 +178,8 @@ int main() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE); 
 
+    tampilkan_menu();
+
     while (skor1 < skor_akhir && skor2 < skor_akhir) {
         arena();
         gerakin_papan();
