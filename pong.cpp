@@ -240,7 +240,7 @@ int main() {
         gerakin_ai(); 
     }
     gerakin_bola();
-    napms(70); 
+    napms(80); 
 }
 
     
