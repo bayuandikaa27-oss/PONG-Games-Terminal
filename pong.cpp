@@ -38,41 +38,41 @@ void tampilkan_menu() {
         erase();
 
         
-        mvprintw(3,  15, ".");
-        mvprintw(4,  68, "*");
-        mvprintw(7,  22, "*");
-        mvprintw(8,  60, ".");
-        mvprintw(12, 12, ".");
-        mvprintw(14, 72, "*");
-        mvprintw(17, 20, "*");
-        mvprintw(18, 65, ".");
+        mvprintw(4,  25, ".");
+        mvprintw(5,  88, "*");
+        mvprintw(9,  32, "*");
+        mvprintw(10, 80, ".");
+        mvprintw(14, 22, ".");
+        mvprintw(16, 92, "*");
+        mvprintw(20, 30, "*");
+        mvprintw(21, 85, ".");
 
         
         attron(A_BOLD);
-        mvprintw(4, 34, "P O N G   G A M E");
+        mvprintw(6, 51, "P O N G   G A M E");
         attroff(A_BOLD);
 
         
         for (int i = 0; i < 3; i++) {
-            int baris = 7 + (i * 4); 
+            int baris = 9 + (i * 4); 
 
             if (i == pilihan) {
                 
                 attron(A_REVERSE | A_BOLD);
-                mvprintw(baris,     33, "                    ");
-                mvprintw(baris + 1, 33, " %s ", opsi[i]);
-                mvprintw(baris + 2, 33, "                    ");
+                mvprintw(baris,     50, "                    ");
+                mvprintw(baris + 1, 50, " %s ", opsi[i]);
+                mvprintw(baris + 2, 50, "                    ");
                 attroff(A_REVERSE | A_BOLD);
             } else {
                 
-                mvprintw(baris,     33, "+------------------+");
-                mvprintw(baris + 1, 33, "|%s|", opsi[i]);
-                mvprintw(baris + 2, 33, "+------------------+");
+                mvprintw(baris,     50, "+------------------+");
+                mvprintw(baris + 1, 50, "|%s|", opsi[i]);
+                mvprintw(baris + 2, 50, "+------------------+");
             }
         }
 
         
-        mvprintw(20, 21, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
+        mvprintw(22, 38, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
         refresh();
 
         int input = getch();
@@ -86,14 +86,14 @@ void tampilkan_menu() {
             } else if (pilihan == 1) {
                 erase();
                 attron(A_BOLD);
-                mvprintw(4, 34, "C A R A   B E R M A I N");
+                mvprintw(6, 48, "C A R A   B E R M A I N");
                 attroff(A_BOLD);
 
-                mvprintw(8,  20, "Player 1 (Kiri)  : Tombol W (Atas) & S (Bawah)");
-                mvprintw(10, 20, "Player 2 (Kanan) : Panah ATAS & Panah BAWAH");
-                mvprintw(12, 20, "Keluar saat main : Tombol Q");
-                mvprintw(14, 20, "Pemain pertama mencapai %d poin menang!", skor_akhir);
-                mvprintw(18, 24, "Tekan tombol apa saja untuk kembali...");
+                mvprintw(10, 37, "Player 1 (Kiri)  : Tombol W (Atas) & S (Bawah)");
+                mvprintw(12, 37, "Player 2 (Kanan) : Panah ATAS & Panah BAWAH");
+                mvprintw(14, 37, "Keluar saat main : Tombol Q");
+                mvprintw(16, 37, "Pemain pertama mencapai %d poin menang!", skor_akhir);
+                mvprintw(20, 41, "Tekan tombol apa saja untuk kembali...");
                 refresh();
                 getch();
             } else if (pilihan == 2) {
