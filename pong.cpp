@@ -15,6 +15,8 @@ int bolaFY = 1;
 int skor1 = 0;
 int skor2 = 0;
 
+bool mode_ai = false;
+
 const int ukuran_papan = 4;
 const int skor_akhir = 5;
 
@@ -28,10 +30,12 @@ void resetbola() {
 void tampilkan_menu() {
     nodelay(stdscr, FALSE);
     int pilihan = 0;
-    const char* opsi[3] = {
+    const char* opsi[4] = {
         "    MULAI GAME    ",
+        "      AI MODE     ",
         "   CARA BERMAIN   ",
-        "      KELUAR      "
+        "      KELUAR      ",
+        
     };
 
     while (true) {
@@ -53,8 +57,8 @@ void tampilkan_menu() {
         attroff(A_BOLD);
 
         
-        for (int i = 0; i < 3; i++) {
-            int baris = 9 + (i * 4); 
+        for (int i = 0; i < 4; i++) {
+            int baris = 8 + (i * 3); 
 
             if (i == pilihan) {
                 
@@ -72,18 +76,22 @@ void tampilkan_menu() {
         }
 
         
-        mvprintw(22, 38, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
+        mvprintw(21, 38, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
         refresh();
 
         int input = getch();
         if (input == KEY_UP) {
-            pilihan = (pilihan - 1 + 3) % 3;
+            pilihan = (pilihan - 1 + 4) % 4;
         } else if (input == KEY_DOWN) {
-            pilihan = (pilihan + 1) % 3;
+            pilihan = (pilihan + 1) % 4;
         } else if (input == 10 || input == KEY_ENTER) {
             if (pilihan == 0) {
+                mode_ai = true;
                 break;
             } else if (pilihan == 1) {
+                mode_ai = false;
+                break;
+            }else if (pilihan == 2) {
                 erase();
                 attron(A_BOLD);
                 mvprintw(6, 48, "C A R A   B E R M A I N");
@@ -96,9 +104,10 @@ void tampilkan_menu() {
                 mvprintw(20, 41, "Tekan tombol apa saja untuk kembali...");
                 refresh();
                 getch();
-            } else if (pilihan == 2) {
+            } else if (pilihan == 3) {
                 endwin();
                 exit(0);
+
             }
         }
     }
@@ -107,9 +116,13 @@ void tampilkan_menu() {
 void arena() {
     erase();
 
-    mvprintw(0, 20, "PONG GAME");
+    mvprintw(0, 32, "PONG GAME");
     mvprintw(1, 15, "PLAYER 1: %d", skor1);
-    mvprintw(1, 40, "PLAYER 2: %d", skor2);
+    if (mode_ai) {
+    mvprintw(1, 45, "KOMPUTER: %d", skor2);
+    }else {
+        mvprintw(1, 45, "PLAYER 2: %d", skor2);
+    }
 
     for (int x = 0; x < panjang; x++) {
         mvaddch(3, x + 2, '-');
@@ -130,13 +143,17 @@ void arena() {
 
     mvaddch(bolaY + 4, bolaX + 2, 'O');
 
-    mvprintw(lebar + 6, 10,
-             "P1: W/S | P2: UP/DOWN | Q: QUIT");
+    if (mode_ai) {
+    mvprintw(lebar + 6, 18, "P1: W/S | LAWAN: AI | Q: QUIT");
+    }else {
+        mvprintw(lebar + 6, 18, "P1: W/S | P2: UP/DOWN | Q: QUIT");
+    }
 
     refresh();
 }
 
 void gerakin_papan() {
+
     int input = getch();
     switch (input) {
         case 'w':
@@ -167,7 +184,16 @@ void gerakin_papan() {
             exit(0);
     }
 }
-
+void gerakin_ai() {
+    if (bolaFX > 0) {
+        int tengah_papan = pemain2 + (ukuran_papan / 2);
+        if (bolaY < tengah_papan && pemain2 > 0) {
+            pemain2--;
+        } else if (bolaY > tengah_papan && pemain2 < lebar - ukuran_papan) {
+            pemain2++;
+        }
+    }
+}
 void gerakin_bola() {
     bolaX += bolaFX;
     bolaY += bolaFY;
@@ -207,9 +233,15 @@ int main() {
     while (skor1 < skor_akhir && skor2 < skor_akhir) {
         arena();
         gerakin_papan();
-        gerakin_bola();
-        napms(60);
+        while (skor1 < skor_akhir && skor2 < skor_akhir) {
+    arena();
+    gerakin_papan();
+    if (mode_ai) {
+        gerakin_ai(); 
     }
+    gerakin_bola();
+    napms(70); 
+}
 
     
     nodelay(stdscr, FALSE);
