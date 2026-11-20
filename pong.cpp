@@ -34,7 +34,7 @@ void tampilkan_menu() {
         "    MULAI GAME    ",
         "      AI MODE     ",
         "   CARA BERMAIN   ",
-        "      KELUAR      ",
+        "      KELUAR      "
         
     };
 
@@ -192,7 +192,7 @@ void gerakin_ai() {
         } else if (bolaY > tengah_papan && pemain2 < lebar - ukuran_papan) {
             pemain2++;
         }
-    }`
+    }
 }
 void gerakin_bola() {
     bolaX += bolaFX;
@@ -203,7 +203,7 @@ void gerakin_bola() {
     }
 
     if (bolaX == 3) {
-        if (bolaY >= pemain1 + 4 && bolaY < pemain1 + ukuran_papan) {
+        if (bolaY >= pemain1 && bolaY < pemain1 + ukuran_papan) {
             bolaFX *= -1;
         } else {
             skor2++;
@@ -233,9 +233,6 @@ int main() {
     while (skor1 < skor_akhir && skor2 < skor_akhir) {
         arena();
         gerakin_papan();
-        while (skor1 < skor_akhir && skor2 < skor_akhir) {
-    arena();
-    gerakin_papan();
     if (mode_ai) {
         gerakin_ai(); 
     }
@@ -257,5 +254,4 @@ int main() {
 
     endwin();
     return 0;
-}
 }
