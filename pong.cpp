@@ -22,7 +22,7 @@ void resetbola() {
     bolaX = panjang / 2;
     bolaY = lebar / 2;
 
-    bolaFX = 2;
+    bolaFX = 1;
     bolaFY = 1;
 }
 void tampilkan_menu() {
@@ -141,23 +141,23 @@ void gerakin_papan() {
     switch (input) {
         case 'w':
         case 'W':
-            if (pemain1 > 4) {
+            if (pemain1 > 0) {
                 pemain1--;
             }
             break;
         case 's':
         case 'S':
-            if (pemain1 < lebar + 3 - ukuran_papan) {
+            if (pemain1 < lebar - ukuran_papan) {
                 pemain1++;
             }
             break;
         case KEY_UP:
-            if (pemain2 > 4) {
+            if (pemain2 > 0) {
                 pemain2--;
             }
             break;
         case KEY_DOWN:
-            if (pemain2 < lebar + 3 - ukuran_papan) {
+            if (pemain2 < lebar - ukuran_papan) {
                 pemain2++;
             }
             break;
@@ -172,12 +172,12 @@ void gerakin_bola() {
     bolaX += bolaFX;
     bolaY += bolaFY;
 
-    if (bolaY <= 4 || bolaY >= lebar + 3) {
+    if (bolaY <= 0 || bolaY >= lebar - 1) {
         bolaFY *= -1;
     }
 
-    if (bolaX == 5) {
-        if (bolaY >= pemain1 + 4 && bolaY < pemain1 + 4 + ukuran_papan) {
+    if (bolaX == 3) {
+        if (bolaY >= pemain1 + 4 && bolaY < pemain1 + ukuran_papan) {
             bolaFX *= -1;
         } else {
             skor2++;
@@ -185,8 +185,8 @@ void gerakin_bola() {
         }
     }
 
-    if (bolaX == panjang + 1) {
-        if (bolaY >= pemain2 + 4 && bolaY < pemain2 + 4 + ukuran_papan) {
+    if (bolaX == panjang - 4) {
+        if (bolaY >= pemain2 && bolaY < pemain2 + ukuran_papan) {
             bolaFX *= -1;
         } else {
             skor1++;
