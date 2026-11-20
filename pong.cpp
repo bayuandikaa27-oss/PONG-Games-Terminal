@@ -25,7 +25,61 @@ void resetbola() {
     bolaFX = 2;
     bolaFY = 1;
 }
+void tampilkan_menu() {
+    nodelay(stdscr, FALSE); 
+    int pilihan = 0;
+    const char* opsi[3] = {
+        "1. Mulai Game",
+        "2. Cara Bermain",
+        "3. Keluar"
+    };
 
+    while (true) {
+        erase();
+        mvprintw(3, 25, "======================");
+        mvprintw(4, 25, "      PONG GAME       ");
+        mvprintw(5, 25, "======================");
+
+        for (int i = 0; i < 3; i++) {
+            if (i == pilihan) {
+                attron(A_REVERSE); 
+                mvprintw(8 + i * 2, 27, "%s", opsi[i]);
+                attroff(A_REVERSE);
+            } else {
+                mvprintw(8 + i * 2, 27, "%s", opsi[i]);
+            }
+        }
+
+        mvprintw(16, 18, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
+        refresh();
+
+        int input = getch();
+        if (input == KEY_UP) {
+            pilihan = (pilihan - 1 + 3) % 3;
+        } else if (input == KEY_DOWN) {
+            pilihan = (pilihan + 1) % 3;
+        } else if (input == 10 || input == KEY_ENTER) { 
+            if (pilihan == 0) {
+                break; 
+            } else if (pilihan == 1) {
+                
+                erase();
+                mvprintw(4, 25, "=== CARA BERMAIN ===");
+                mvprintw(7, 15, "Player 1 (Kiri)  : Tombol W (Atas) & S (Bawah)");
+                mvprintw(9, 15, "Player 2 (Kanan) : Panah ATAS & Panah BAWAH");
+                mvprintw(11, 15, "Keluar saat main : Tombol Q");
+                mvprintw(13, 15, "Pemain pertama mencapai %d poin menang!", skor_akhir);
+                mvprintw(17, 18, "Tekan tombol apa saja untuk kembali...");
+                refresh();
+                getch();
+            } else if (pilihan == 2) {
+                endwin();
+                exit(0);
+            }
+        }
+    }
+    nodelay(stdscr, TRUE); 
+}
 void arena() {
     erase();
 
@@ -128,7 +182,7 @@ int main() {
         arena();
         gerakin_papan();
         gerakin_bola();
-        napms(60)
+        napms(60);
     }
 
     
