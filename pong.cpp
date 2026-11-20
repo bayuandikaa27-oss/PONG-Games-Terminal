@@ -86,10 +86,10 @@ void tampilkan_menu() {
             pilihan = (pilihan + 1) % 4;
         } else if (input == 10 || input == KEY_ENTER) {
             if (pilihan == 0) {
-                mode_ai = true;
+                mode_ai = false;
                 break;
             } else if (pilihan == 1) {
-                mode_ai = false;
+                mode_ai = true;
                 break;
             }else if (pilihan == 2) {
                 erase();
@@ -192,7 +192,7 @@ void gerakin_ai() {
         } else if (bolaY > tengah_papan && pemain2 < lebar - ukuran_papan) {
             pemain2++;
         }
-    }
+    }`
 }
 void gerakin_bola() {
     bolaX += bolaFX;
