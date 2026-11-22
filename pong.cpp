@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
+
 using namespace std;
 
 const int panjang = 70;
@@ -31,8 +32,8 @@ void tampilkan_menu() {
     nodelay(stdscr, FALSE);
     int pilihan = 0;
     const char* opsi[4] = {
-        "    MULAI GAME    ",
-        "      AI MODE     ",
+        "    P1 vs P2      ",
+        "    P1 vs COM     ",
         "   CARA BERMAIN   ",
         "      KELUAR      "
         
@@ -184,7 +185,7 @@ void gerakin_papan() {
             exit(0);
     }
 }
-void gerakin_ai() {
+void com() {
     if (bolaFX > 0) {
         int tengah_papan = pemain2 + (ukuran_papan / 2);
         if (bolaY < tengah_papan && pemain2 > 0) {
@@ -233,8 +234,8 @@ int main() {
     while (skor1 < skor_akhir && skor2 < skor_akhir) {
         arena();
         gerakin_papan();
-    if (mode_ai) {
-        gerakin_ai(); 
+    if (lawan_com) {
+        com(); 
     }
     gerakin_bola();
     napms(80); 
