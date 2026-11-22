@@ -234,7 +234,7 @@ int main() {
     while (skor1 < skor_akhir && skor2 < skor_akhir) {
         arena();
         gerakin_papan();
-    if (lawan_com) {
+    if (mode_ai) {
         com(); 
     }
     gerakin_bola();
