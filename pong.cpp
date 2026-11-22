@@ -19,7 +19,7 @@ int skor2 = 0;
 bool mode_ai = false;
 
 const int ukuran_papan = 4;
-const int skor_akhir = 5;
+const int skor_akhir = 7;
 
 void resetbola() {
     bolaX = panjang / 2;
@@ -238,7 +238,7 @@ int main() {
         com(); 
     }
     gerakin_bola();
-    napms(80); 
+    napms(75); 
 }
 
     
