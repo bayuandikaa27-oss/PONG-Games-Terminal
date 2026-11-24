@@ -339,7 +339,7 @@ int main() {
     loading_screen();
 
     while (true) {
-        
+
         skor1 = 0;
         skor2 = 0;
         pemain1 = lebar / 2;
@@ -381,20 +381,28 @@ int main() {
         erase();
         attron(A_BOLD);
         if (skor1 >= skor_akhir) {
-            mvprintw(tengahY - 1, tengahX - 8, "PLAYER 1 MENANG!");
+            mvprintw(tengahY - 2, tengahX - 8, "PLAYER 1 MENANG!");
         } else {
             if (mode_ai) {
-                mvprintw(tengahY - 1, tengahX - 8, "KOMPUTER MENANG!");
+                mvprintw(tengahY - 2, tengahX - 8, "KOMPUTER MENANG!");
             } else {
-                mvprintw(tengahY - 1, tengahX - 8, "PLAYER 2 MENANG!");
+                mvprintw(tengahY - 2, tengahX - 8, "PLAYER 2 MENANG!");
             }
         }
         attroff(A_BOLD);
 
-        mvprintw(tengahY + 1, tengahX - 20, "Tekan tombol apa saja untuk ke menu...");
+        mvprintw(tengahY + 3, tengahX - 21, "Tekan [R] untuk ke Menu  |  [Q] untuk Quit");
         refresh();
-        getch();
 
+        while (true) {
+            tombol = getch();
+            if (tombol == 'r' || tombol == 'R') {
+                break;
+            } else if (tombol == 'q' || tombol == 'Q') {
+                endwin();
+                return 0;
+            }
+        }
 
         nodelay(stdscr, TRUE);
     }
