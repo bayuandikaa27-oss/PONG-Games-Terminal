@@ -28,6 +28,112 @@ void resetbola() {
     bolaFX = 1;
     bolaFY = 1;
 }
+
+
+void loading_screen() {
+    erase();
+
+    if (has_colors()) {
+        start_color();
+        init_pair(1, COLOR_BLUE, COLOR_BLUE);
+        init_pair(2, COLOR_WHITE, COLOR_BLACK);
+    }
+
+    int lebar_bar = 40;
+    int tengah_x = (COLS - lebar_bar - 2) / 2;
+    int tengah_y = LINES / 2 - 2;
+
+    // Judul
+    attron(A_BOLD);
+    mvprintw(tengah_y - 3, (COLS - 9) / 2, "PONG GAME");
+    attroff(A_BOLD);
+
+   
+    for (int progress = 0; progress <= lebar_bar; progress++) {
+       
+        attron(COLOR_PAIR(2) | A_BOLD);
+
+        mvaddch(tengah_y, tengah_x, '+');
+
+        for (int x = 1; x <= lebar_bar; x++) {
+            mvaddch(tengah_y, tengah_x + x, '-');
+        }
+
+        mvaddch(tengah_y, tengah_x + lebar_bar + 1, '+');
+        mvaddch(tengah_y + 1, tengah_x, '|');
+        mvaddch(tengah_y + 1, tengah_x + lebar_bar + 1, '|');
+
+        mvaddch(tengah_y + 2, tengah_x, '+');
+
+        for (int x = 1; x <= lebar_bar; x++) {
+            mvaddch(tengah_y + 2, tengah_x + x, '-');
+        }
+
+        mvaddch(tengah_y + 2, tengah_x + lebar_bar + 1, '+');
+
+        attroff(COLOR_PAIR(2) | A_BOLD);
+        if (has_colors()) {
+            attron(COLOR_PAIR(1));
+        }
+
+        for (int x = 0; x < progress; x++) {
+            mvaddch(tengah_y + 1, tengah_x + 1 + x, ' ');
+        }
+
+        if (has_colors()) {
+            attroff(COLOR_PAIR(1));
+        }
+
+        attron(A_BOLD);
+        mvprintw(tengah_y + 4, (COLS - 12) / 2, "LOADING...");
+        attroff(A_BOLD);
+
+        mvprintw(tengah_y + 5, (COLS - 5) / 2,
+                 "%3d%%", progress * 100 / lebar_bar);
+
+        refresh();
+        napms(60);
+    }
+
+    napms(400);
+    erase();
+    refresh();
+}
+
+
+void hitung_mundur() {
+    nodelay(stdscr, FALSE);
+
+    const char* hitungan[] = {"3", "2", "1", "GO!"};
+
+    // Posisi tengah arena sesuai kode Pong kamu
+    int tengahX = (panjang + 4) / 2;
+    int tengahY = (lebar + 4) / 2;
+
+    for (int i = 0; i < 4; i++) {
+        erase();
+
+        // Judul di atas hitungan
+        attron(A_BOLD);
+        mvprintw( tengahY - 3, tengahX - 4, "PONG GAME");
+        attroff(A_BOLD);
+
+        // Angka tepat di tengah arena
+        attron(A_BOLD);
+        mvprintw(tengahY, tengahX - 1,
+                 "%s", hitungan[i]);
+        attroff(A_BOLD);
+
+        refresh();
+        napms(1000);
+    }
+
+    erase();
+    refresh();
+
+    nodelay(stdscr, TRUE);
+}
+
 void tampilkan_menu() {
     nodelay(stdscr, FALSE);
     int pilihan = 0;
@@ -229,7 +335,10 @@ int main() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE); 
 
+
+    loading_screen(); 
     tampilkan_menu();
+    hitung_mundur();
 
     while (skor1 < skor_akhir && skor2 < skor_akhir) {
         arena();
