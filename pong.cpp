@@ -43,7 +43,6 @@ void loading_screen() {
     int tengah_x = (COLS - lebar_bar - 2) / 2;
     int tengah_y = LINES / 2 - 2;
 
-    // Judul
     attron(A_BOLD);
     mvprintw(tengah_y - 3, (COLS - 9) / 2, "PONG GAME");
     attroff(A_BOLD);
@@ -106,22 +105,22 @@ void hitung_mundur() {
 
     const char* hitungan[] = {"3", "2", "1", "GO!"};
 
-    // Posisi tengah arena sesuai kode Pong kamu
-    int tengahX = (panjang + 4) / 2;
-    int tengahY = (lebar + 4) / 2;
+    int tengahX = COLS / 2;
+    int tengahY = LINES / 2;
 
     for (int i = 0; i < 4; i++) {
         erase();
 
-        // Judul di atas hitungan
         attron(A_BOLD);
-        mvprintw( tengahY - 3, tengahX - 4, "PONG GAME");
+        mvprintw(tengahY - 3, tengahX - 4, "PONG GAME");
         attroff(A_BOLD);
 
-        // Angka tepat di tengah arena
         attron(A_BOLD);
-        mvprintw(tengahY, tengahX - 1,
-                 "%s", hitungan[i]);
+        if (i == 3) {
+            mvprintw(tengahY, tengahX - 1, "%s", hitungan[i]); 
+        } else {
+            mvprintw(tengahY, tengahX, "%s", hitungan[i]);     
+        }
         attroff(A_BOLD);
 
         refresh();
@@ -142,48 +141,44 @@ void tampilkan_menu() {
         "    P1 vs COM     ",
         "   CARA BERMAIN   ",
         "      KELUAR      "
-        
     };
 
     while (true) {
         erase();
 
-        
-        mvprintw(4,  25, ".");
-        mvprintw(5,  88, "*");
-        mvprintw(9,  32, "*");
-        mvprintw(10, 80, ".");
-        mvprintw(14, 22, ".");
-        mvprintw(16, 92, "*");
-        mvprintw(20, 30, "*");
-        mvprintw(21, 85, ".");
+        int tengahX = COLS / 2;
+        int y_awal = (LINES - 20) / 2;
 
-        
+        mvprintw(y_awal,      tengahX - 35, ".");
+        mvprintw(y_awal + 1,  tengahX + 28, "*");
+        mvprintw(y_awal + 5,  tengahX - 28, "*");
+        mvprintw(y_awal + 6,  tengahX + 20, ".");
+        mvprintw(y_awal + 10, tengahX - 38, ".");
+        mvprintw(y_awal + 12, tengahX + 32, "*");
+        mvprintw(y_awal + 16, tengahX - 30, "*");
+        mvprintw(y_awal + 17, tengahX + 25, ".");
+
         attron(A_BOLD);
-        mvprintw(6, 51, "P O N G   G A M E");
+        mvprintw(y_awal + 2, tengahX - 8, "P O N G   G A M E");
         attroff(A_BOLD);
 
-        
         for (int i = 0; i < 4; i++) {
-            int baris = 8 + (i * 3); 
+            int baris = y_awal + 4 + (i * 3);
 
             if (i == pilihan) {
-                
                 attron(A_REVERSE | A_BOLD);
-                mvprintw(baris,     50, "                    ");
-                mvprintw(baris + 1, 50, " %s ", opsi[i]);
-                mvprintw(baris + 2, 50, "                    ");
+                mvprintw(baris,     tengahX - 10, "                    ");
+                mvprintw(baris + 1, tengahX - 10, " %s ", opsi[i]);
+                mvprintw(baris + 2, tengahX - 10, "                    ");
                 attroff(A_REVERSE | A_BOLD);
             } else {
-                
-                mvprintw(baris,     50, "+------------------+");
-                mvprintw(baris + 1, 50, "|%s|", opsi[i]);
-                mvprintw(baris + 2, 50, "+------------------+");
+                mvprintw(baris,     tengahX - 10, "+------------------+");
+                mvprintw(baris + 1, tengahX - 10, "|%s|", opsi[i]);
+                mvprintw(baris + 2, tengahX - 10, "+------------------+");
             }
         }
 
-        
-        mvprintw(21, 38, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
+        mvprintw(y_awal + 17, tengahX - 22, "Gunakan PANAH ATAS/BAWAH & ENTER untuk memilih");
         refresh();
 
         int input = getch();
@@ -198,62 +193,69 @@ void tampilkan_menu() {
             } else if (pilihan == 1) {
                 mode_ai = true;
                 break;
-            }else if (pilihan == 2) {
+            } else if (pilihan == 2) {
                 erase();
+                int caraX = COLS / 2;
+                int caraY = (LINES - 16) / 2;
+
                 attron(A_BOLD);
-                mvprintw(6, 48, "C A R A   B E R M A I N");
+                mvprintw(caraY, caraX - 11, "C A R A   B E R M A I N");
                 attroff(A_BOLD);
 
-                mvprintw(10, 37, "Player 1 (Kiri)  : Tombol W (Atas) & S (Bawah)");
-                mvprintw(12, 37, "Player 2 (Kanan) : Panah ATAS & Panah BAWAH");
-                mvprintw(14, 37, "Keluar saat main : Tombol Q");
-                mvprintw(16, 37, "Pemain pertama mencapai %d poin menang!", skor_akhir);
-                mvprintw(20, 41, "Tekan tombol apa saja untuk kembali...");
+                mvprintw(caraY + 4,  caraX - 23, "Player 1 (Kiri)  : Tombol W (Atas) & S (Bawah)");
+                mvprintw(caraY + 6,  caraX - 23, "Player 2 (Kanan) : Panah ATAS & Panah BAWAH");
+                mvprintw(caraY + 8,  caraX - 23, "Keluar saat main : Tombol Q");
+                mvprintw(caraY + 10, caraX - 23, "Pemain pertama mencapai %d poin menang!", skor_akhir);
+                mvprintw(caraY + 14, caraX - 19, "Tekan tombol apa saja untuk kembali...");
                 refresh();
                 getch();
             } else if (pilihan == 3) {
                 endwin();
                 exit(0);
-
             }
         }
     }
     nodelay(stdscr, TRUE);
 }
+
 void arena() {
     erase();
 
-    mvprintw(0, 32, "PONG GAME");
-    mvprintw(1, 15, "PLAYER 1: %d", skor1);
-    if (mode_ai) {
-    mvprintw(1, 45, "KOMPUTER: %d", skor2);
-    }else {
-        mvprintw(1, 45, "PLAYER 2: %d", skor2);
-    }
+    int x_awal = (COLS - panjang) / 2;   
+    int y_awal = (LINES - lebar) / 2 - 2; 
 
+    mvprintw(y_awal - 3, x_awal + 30, "PONG GAME"); 
+    mvprintw(y_awal - 2, x_awal + 13, "PLAYER 1: %d", skor1); 
+    if (mode_ai) {
+        mvprintw(y_awal - 2, x_awal + 43, "KOMPUTER: %d", skor2); 
+    } else {
+        mvprintw(y_awal - 2, x_awal + 43, "PLAYER 2: %d", skor2); 
+    }
+    
     for (int x = 0; x < panjang; x++) {
-        mvaddch(3, x + 2, '-');
-        mvaddch(lebar + 4, x + 2, '-');
+        mvaddch(y_awal, x + x_awal, '-');             
+        mvaddch(y_awal + lebar + 1, x + x_awal, '-'); 
     }
-
-    for (int y = 4; y < lebar + 4; y++) {
-        mvaddch(y, panjang / 2 + 2, '|');
-    }
-
-    for (int i = 0; i < ukuran_papan; i++) {
-        mvaddch(pemain1 + i + 4, 4, '|');
+    
+    for (int y = 1; y < lebar + 1; y++) {
+        mvaddch(y + y_awal, panjang / 2 + x_awal, '|'); 
     }
 
     for (int i = 0; i < ukuran_papan; i++) {
-        mvaddch(pemain2 + i + 4, panjang - 1, '|');
+        mvaddch(pemain1 + i + y_awal + 1, x_awal + 2, '|'); 
     }
 
-    mvaddch(bolaY + 4, bolaX + 2, 'O');
+    for (int i = 0; i < ukuran_papan; i++) {
+        mvaddch(pemain2 + i + y_awal + 1, panjang - 3 + x_awal, '|'); 
+    }
 
+    mvaddch(bolaY + y_awal + 1, bolaX + x_awal, 'O'); 
+
+    
     if (mode_ai) {
-    mvprintw(lebar + 6, 18, "P1: W/S | LAWAN: AI | Q: QUIT");
-    }else {
-        mvprintw(lebar + 6, 18, "P1: W/S | P2: UP/DOWN | Q: QUIT");
+        mvprintw(y_awal + lebar + 3, x_awal + 16, "P1: W/S | LAWAN: AI | Q: QUIT"); 
+    } else {
+        mvprintw(y_awal + lebar + 3, x_awal + 16, "P1: W/S | P2: UP/DOWN | Q: QUIT"); 
     }
 
     refresh();
@@ -351,14 +353,23 @@ int main() {
 }
 
     
-    nodelay(stdscr, FALSE);
+   nodelay(stdscr, FALSE);
     erase();
+
+   
+    int x_awal = (COLS - 37) / 2; 
+    int y_awal = LINES / 2;
+
     if (skor1 >= skor_akhir) {
-        mvprintw(10, 25, "PLAYER 1 MENANG!");
+        mvprintw(y_awal - 1, x_awal + 10, "PLAYER 1 MENANG!");
     } else {
-        mvprintw(10, 25, "PLAYER 2 MENANG!");
+        if (mode_ai) {
+            mvprintw(y_awal - 1, x_awal + 10, "KOMPUTER MENANG!");
+        } else {
+            mvprintw(y_awal - 1, x_awal + 10, "PLAYER 2 MENANG!");
+        }
     }
-    mvprintw(12, 20, "Tekan tombol apa saja untuk keluar...");
+    mvprintw(y_awal + 1, x_awal, "Tekan tombol apa saja untuk keluar...");
     refresh();
     getch();
 
