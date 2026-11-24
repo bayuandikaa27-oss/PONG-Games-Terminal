@@ -330,48 +330,74 @@ void gerakin_bola() {
     }
 }
 int main() {
-    
     initscr();
     noecho();
     curs_set(0);
     keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE); 
+    nodelay(stdscr, TRUE);
 
+    loading_screen();
 
-    loading_screen(); 
-    tampilkan_menu();
-    hitung_mundur();
+    while (true) {
+        
+        skor1 = 0;
+        skor2 = 0;
+        pemain1 = lebar / 2;
+        pemain2 = lebar / 2;
+        resetbola();
 
-    while (skor1 < skor_akhir && skor2 < skor_akhir) {
-        arena();
-        gerakin_papan();
-    if (mode_ai) {
-        com(); 
-    }
-    gerakin_bola();
-    napms(75); 
-}
+        tampilkan_menu();
+        hitung_mundur();
 
-    
-   nodelay(stdscr, FALSE);
-    erase();
-
-   
-    int x_awal = (COLS - 37) / 2; 
-    int y_awal = LINES / 2;
-
-    if (skor1 >= skor_akhir) {
-        mvprintw(y_awal - 1, x_awal + 10, "PLAYER 1 MENANG!");
-    } else {
-        if (mode_ai) {
-            mvprintw(y_awal - 1, x_awal + 10, "KOMPUTER MENANG!");
-        } else {
-            mvprintw(y_awal - 1, x_awal + 10, "PLAYER 2 MENANG!");
+        while (skor1 < skor_akhir && skor2 < skor_akhir) {
+            arena();
+            gerakin_papan();
+            if (mode_ai) {
+                com();
+            }
+            gerakin_bola();
+            napms(75);
         }
+
+        nodelay(stdscr, FALSE);
+        erase();
+        int tengahX = COLS / 2;
+        int tengahY = LINES / 2;
+
+        attron(A_BOLD);
+        mvprintw(tengahY - 1, tengahX - 9, "G A M E   O V E R");
+        attroff(A_BOLD);
+        mvprintw(tengahY + 1, tengahX - 18, "Tekan ENTER untuk melihat pemenang...");
+        refresh();
+
+        int tombol;
+        while (true) {
+            tombol = getch();
+            if (tombol == 10 || tombol == KEY_ENTER) {
+                break;
+            }
+        }
+
+        erase();
+        attron(A_BOLD);
+        if (skor1 >= skor_akhir) {
+            mvprintw(tengahY - 1, tengahX - 8, "PLAYER 1 MENANG!");
+        } else {
+            if (mode_ai) {
+                mvprintw(tengahY - 1, tengahX - 8, "KOMPUTER MENANG!");
+            } else {
+                mvprintw(tengahY - 1, tengahX - 8, "PLAYER 2 MENANG!");
+            }
+        }
+        attroff(A_BOLD);
+
+        mvprintw(tengahY + 1, tengahX - 20, "Tekan tombol apa saja untuk ke menu...");
+        refresh();
+        getch();
+
+
+        nodelay(stdscr, TRUE);
     }
-    mvprintw(y_awal + 1, x_awal, "Tekan tombol apa saja untuk keluar...");
-    refresh();
-    getch();
 
     endwin();
     return 0;
